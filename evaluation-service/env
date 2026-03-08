@@ -1,0 +1,21 @@
+# Porta que este serviço irá rodar
+PORT=8004
+
+# URL do seu Redis local
+REDIS_URL=redis://redis:6379
+
+# URLs dos outros serviços
+FLAG_SERVICE_URL=http://flag-service:8002
+TARGETING_SERVICE_URL=http://targeting-service:8003
+
+
+# --- Configuração da AWS (Obrigatório para o desafio) ---
+# Cole a URL da fila SQS que você criou no console da AWS
+AWS_SQS_URL=https://sqs.us-east-1.amazonaws.com/730335328948/aws-evaluation-analytics
+
+# Região da sua fila SQS
+AWS_REGION=us-east-1
+
+# teste 4
+
+
