@@ -163,13 +163,17 @@ jobs:
         - name: Update image tag
           run: |
             COMMIT_HASH=${GITHUB_SHA::7}
-            FILE_PATH="k8s/${{ env.SERVICE_NAME }}/deployment.yml"
+            FILE_PATH="Helm/togglemaster/values.yaml"
+        
+            echo "Atualizando imagem do serviço: ${{ env.SERVICE_NAME }}"
+            echo "Arquivo: $FILE_PATH"
+        
+            sed -i "/^${{ env.SERVICE_NAME }}:/,/^[a-zA-Z0-9-]*:/ s|image: .*|image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/togglemaster_${{ env.SERVICE_NAME }}:$COMMIT_HASH|" $FILE_PATH
+        
+            echo "Resultado:"
+            grep -A 5 "${{ env.SERVICE_NAME }}:" $FILE_PATH
+            cat Helm/togglemaster/values.yaml
             
-            echo "Atualizando arquivo: $FILE_PATH"
-            
-            # Ajuste no SED para ser mais específico e não falhar silenciosamente
-            sed -i "s|image: .*${{ env.SERVICE_NAME }}:.*|image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ env.SERVICE_NAME }}:$COMMIT_HASH|g" $FILE_PATH
-
         # -----------------------------
         # 11. Commit for k8s Updates
         # -----------------------------
