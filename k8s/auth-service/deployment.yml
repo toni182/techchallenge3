@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: auth-service
-          image: 618678798048.dkr.ecr.us-east-1.amazonaws.com/auth-service:3a4ee11
+          image: 057096910794.dkr.ecr.us-east-1.amazonaws.com/auth-service:0cd7203
           ports:
             - containerPort: 8001
