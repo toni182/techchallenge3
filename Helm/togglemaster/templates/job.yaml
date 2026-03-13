@@ -1,0 +1,37 @@
+{{- range $appName, $appConfig := .Values }}
+{{- if and (kindIs "map" $appConfig) (hasKey $appConfig "job") }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ $appConfig.job.name }}
+  namespace: {{ $appConfig.namespace }}
+  annotations:
+    # Garante que só rode após o Helm criar os outros recursos (Deployments, ConfigMaps)
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "10" 
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  backoffLimit: 3 #Exec 3 times before fail
+  template:
+    spec: #Spec pod
+      restartPolicy: Never
+      containers:
+        - name: psql
+          image: {{ $appConfig.job.image }}
+          command: {{ $appConfig.job.command | toJson }}
+          args: {{ $appConfig.job.args | toJson }}
+          volumeMounts:
+            - name: sql-volume
+              mountPath: /sql
+          envFrom:
+            - secretRef:
+                name: {{ $appName }}-db-secret
+            - secretRef:
+                name: {{ $appName }}-db-secret-host
+      volumes:
+        - name: sql-volume
+          configMap:
+            name: {{ $appConfig.configMap.name }}
+---
+{{- end }}
+{{- end }}

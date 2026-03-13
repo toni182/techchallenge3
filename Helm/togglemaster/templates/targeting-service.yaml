@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: app-targeting-service
+    {{- include "togglemaster.labels" . | nindent 4 }}
+  name: app-targeting-service
+  namespace: targeting-service
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: {{ (index .Values "targeting-service").maxSurge }}
+      maxUnavailable: {{ (index .Values "targeting-service").maxUnavailable }}
+  replicas: {{ (index .Values "targeting-service").replicas}}
+  selector:
+    matchLabels:
+      app: app-targeting-service
+  template:
+    metadata:
+      labels:
+        app: app-targeting-service
+    spec:
+      containers:
+        - name: app-targeting-service 
+          image: {{ (index .Values "targeting-service").image }}
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "206Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: "/health"
+              port: {{ (index .Values "targeting-service").port }}
+          readinessProbe:
+            httpGet:
+              path: "/health"
+              port: {{ (index .Values "targeting-service").port }}
+          envFrom:
+            - secretRef:
+                name: targeting-service-db-secret #Credentials to db login and generics
+            - secretRef:
+                name: targeting-service-db-secret-host #Credential to db login (host)

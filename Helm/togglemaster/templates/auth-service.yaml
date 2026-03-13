@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: app-auth-service
+    {{- include "togglemaster.labels" .| nindent 4 }}
+  name: app-auth-service
+  namespace: {{ (index .Values "auth-service").namespace }}
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: {{ (index .Values "auth-service").maxSurge }}
+      maxUnavailable: {{ (index .Values "auth-service").maxUnavailable }}
+  replicas: {{ (index .Values "auth-service").replicas}}
+  selector:
+    matchLabels:
+      app: app-auth-service
+  template:
+    metadata:
+      labels:
+        app: app-auth-service
+    spec:
+      containers:
+        - name: app-auth-service
+          image: {{ (index .Values "auth-service").image }}
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "206Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          startupProbe:
+            httpGet:
+              path: /health
+              port: {{ (index .Values "auth-service").port }}
+            failureThreshold: 180
+            periodSeconds: 1
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: {{ (index .Values "auth-service").port }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ (index .Values "auth-service").port }}
+            initialDelaySeconds: 180
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          envFrom:
+            - secretRef:
+                name: auth-service-db-secret #Credentials to db login and generics
+            - secretRef:
+                name: auth-service-db-secret-host #Credential to db login (host)

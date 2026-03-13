@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: app-analytics-service
+    {{- include "togglemaster.labels" .| nindent 4 }}
+  name: app-analytics-service
+  namespace: analytics-service
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: {{ (index .Values "analytics-service").maxSurge }}
+      maxUnavailable: {{ (index .Values "analytics-service").maxUnavailable }}
+  replicas: {{ (index .Values "analytics-service").replicas}}
+  selector:
+    matchLabels:
+      app: app-analytics-service
+  template:
+    metadata:
+      labels:
+        app: app-analytics-service
+    spec:
+      containers:
+        - name: app-analytics-service 
+          image: {{ (index .Values "analytics-service").image }}
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ (index .Values "analytics-service").port }}
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: {{ (index .Values "analytics-service").port }}
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          envFrom:
+            - secretRef:
+                name: analytics-service-db-secret #Credentials to db login and generics
+            - secretRef:
+                name: analytics-service-db-secret-host #Credential to db login (host)
