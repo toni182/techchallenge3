@@ -4,18 +4,46 @@ on:
   workflow_dispatch:
 
 jobs:
+  trigger-pipelines:
+    runs-on: ubuntu-latest
 
-  deploy-auth:
-    uses: ./.github/workflows/auth.yml
+    steps:
+      - name: Trigger auth pipeline
+        run: |
+          curl -X POST \
+          -H "Authorization: Bearer ${{ secrets.GITOPS_TOKEN }}" \
+          -H "Accept: application/vnd.github+json" \
+          https://api.github.com/repos/${{ github.repository }}/actions/workflows/auth.yml/dispatches \
+          -d '{"ref":"main"}'
 
-  deploy-flag:
-    uses: ./.github/workflows/flag.yml
+      - name: Trigger flag pipeline
+        run: |
+          curl -X POST \
+          -H "Authorization: Bearer ${{ secrets.GITOPS_TOKEN }}" \
+          -H "Accept: application/vnd.github+json" \
+          https://api.github.com/repos/${{ github.repository }}/actions/workflows/flag.yml/dispatches \
+          -d '{"ref":"main"}'
 
-  deploy-targeting:
-    uses: ./.github/workflows/targeting.yml
+      - name: Trigger targeting pipeline
+        run: |
+          curl -X POST \
+          -H "Authorization: Bearer ${{ secrets.GITOPS_TOKEN }}" \
+          -H "Accept: application/vnd.github+json" \
+          https://api.github.com/repos/${{ github.repository }}/actions/workflows/targeting.yml/dispatches \
+          -d '{"ref":"main"}'
 
-  deploy-evaluation:
-    uses: ./.github/workflows/evaluation.yml
+      - name: Trigger evaluation pipeline
+        run: |
+          curl -X POST \
+          -H "Authorization: Bearer ${{ secrets.GITOPS_TOKEN }}" \
+          -H "Accept: application/vnd.github+json" \
+          https://api.github.com/repos/${{ github.repository }}/actions/workflows/evaluation.yml/dispatches \
+          -d '{"ref":"main"}'
 
-  deploy-analytics:
-    uses: ./.github/workflows/analytics.yml
+      - name: Trigger analytics pipeline
+        run: |
+          curl -X POST \
+          -H "Authorization: Bearer ${{ secrets.GITOPS_TOKEN }}" \
+          -H "Accept: application/vnd.github+json" \
+          https://api.github.com/repos/${{ github.repository }}/actions/workflows/analytics.yml/dispatches \
+          -d '{"ref":"main"}'
