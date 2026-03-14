@@ -3,7 +3,7 @@ auth-service:
   maxSurge: 50%
   maxUnavailable: 0
   replicas: 2
-  image: 618678798048.dkr.ecr.us-east-1.amazonaws.com/togglemaster_auth-service:e50f099
+  image: 057096910794.dkr.ecr.us-east-1.amazonaws.com/togglemaster_auth-service:7f5873d
   port: 8001
   ingress: 
     path: /auth-service(/|$)(.*)
@@ -22,7 +22,7 @@ auth-service:
       );
   job:
     name: auth-db-init
-    image: 618678798048.dkr.ecr.us-east-1.amazonaws.com/togglemaster_auth-service:e50f099
+    image: 057096910794.dkr.ecr.us-east-1.amazonaws.com/togglemaster_auth-service:7f5873d
     command: ["sh", "-c"]
     args:
       - |
