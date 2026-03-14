@@ -210,7 +210,7 @@ evaluation-service:
   maxSurge: 50%
   maxUnavailable: 0
   replicas: 2
-  image: 618678798048.dkr.ecr.us-east-1.amazonaws.com/togglemaster_evaluation-service:5ceaf31
+  image: 057096910794.dkr.ecr.us-east-1.amazonaws.com/togglemaster_evaluation-service:e845dbe
   port: 8004
   ingress: 
     path: /evaluation-service(/|$)(.*)
