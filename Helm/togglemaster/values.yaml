@@ -132,7 +132,7 @@ targeting-service:
   maxSurge: 50%
   maxUnavailable: 0
   replicas: 2
-  image: 618678798048.dkr.ecr.us-east-1.amazonaws.com/togglemaster_targeting-service:6bfac7d
+  image: 057096910794.dkr.ecr.us-east-1.amazonaws.com/togglemaster_targeting-service:8ec1d23
   port: 8003
   ingress: 
     path: /targeting-service(/|$)(.*)
@@ -175,7 +175,7 @@ targeting-service:
       EXECUTE PROCEDURE trigger_set_timestamp();
   job:
     name: targeting-db-init
-    image: 618678798048.dkr.ecr.us-east-1.amazonaws.com/togglemaster_targeting-service:6bfac7d
+    image: 057096910794.dkr.ecr.us-east-1.amazonaws.com/togglemaster_targeting-service:8ec1d23
     command: ["sh", "-c"]
     args:
       - |
