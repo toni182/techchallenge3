@@ -3,7 +3,8 @@ auth-service:
   maxSurge: 50%
   maxUnavailable: 0
   replicas: 2
-  image: 057096910794.dkr.ecr.us-east-1.amazonaws.com/auth-service:9acc3d4
+  image: morganis1411/togglemaster_auth-service:1.1
+  #image: 449954007039.dkr.ecr.us-east-1.amazonaws.com/togglemaster_auth-service:1.2.0
   port: 8001
   ingress: 
     path: /auth-service(/|$)(.*)
@@ -22,7 +23,7 @@ auth-service:
       );
   job:
     name: auth-db-init
-    image: 057096910794.dkr.ecr.us-east-1.amazonaws.com/auth-service:9acc3d4
+    image: postgres:15
     command: ["sh", "-c"]
     args:
       - |
@@ -57,7 +58,8 @@ flag-service:
   maxSurge: 50%
   maxUnavailable: 0
   replicas: 2
-  image: 057096910794.dkr.ecr.us-east-1.amazonaws.com/togglemaster_flag-service:a357b69
+  image: morganis1411/togglemaster_flag-service:1.1
+  #image: 449954007039.dkr.ecr.us-east-1.amazonaws.com/togglemaster_flag-service:1.2.0
   port: 8002
   ingress: 
     path: /flag-service(/|$)(.*)
@@ -97,7 +99,7 @@ flag-service:
       EXECUTE PROCEDURE trigger_set_timestamp();
   job:
     name: flag-db-init
-    image: 057096910794.dkr.ecr.us-east-1.amazonaws.com/togglemaster_flag-service:a357b69
+    image: postgres:15
     command: ["sh", "-c"]
     args:
       - |
@@ -132,7 +134,8 @@ targeting-service:
   maxSurge: 50%
   maxUnavailable: 0
   replicas: 2
-  image: 057096910794.dkr.ecr.us-east-1.amazonaws.com/togglemaster_targeting-service:8ec1d23
+  image: morganis1411/togglemaster_targeting-service:1.1
+  #image: 449954007039.dkr.ecr.us-east-1.amazonaws.com/togglemaster_targeting-service:1.2.0
   port: 8003
   ingress: 
     path: /targeting-service(/|$)(.*)
@@ -175,7 +178,7 @@ targeting-service:
       EXECUTE PROCEDURE trigger_set_timestamp();
   job:
     name: targeting-db-init
-    image: 057096910794.dkr.ecr.us-east-1.amazonaws.com/togglemaster_targeting-service:8ec1d23
+    image: postgres:15
     command: ["sh", "-c"]
     args:
       - |
@@ -210,7 +213,8 @@ evaluation-service:
   maxSurge: 50%
   maxUnavailable: 0
   replicas: 2
-  image: 057096910794.dkr.ecr.us-east-1.amazonaws.com/togglemaster_evaluation-service:e845dbe
+  image: morganis1411/togglemaster_evaluation-service:1.0
+  #image: 449954007039.dkr.ecr.us-east-1.amazonaws.com/togglemaster_evaluation-service:1.2.0
   port: 8004
   ingress: 
     path: /evaluation-service(/|$)(.*)
@@ -220,7 +224,8 @@ analytics-service:
   maxSurge: 50%
   maxUnavailable: 0
   replicas: 2
-  image: 057096910794.dkr.ecr.us-east-1.amazonaws.com/togglemaster_analytics-service:e49bc0a
+  image: morganis1411/togglemaster_analytics-service:1.1
+  #image: 449954007039.dkr.ecr.us-east-1.amazonaws.com/togglemaster_analytics-service:1.2.0
   port: 8005
   ingress: 
     path: /analytics-service(/|$)(.*)
