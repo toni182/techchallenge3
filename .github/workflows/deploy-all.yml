@@ -10,6 +10,13 @@ jobs:
     steps:
 
       # -----------------------------
+      # ARGOCD + SEALEDSECRETS
+      # -----------------------------
+      - name: Apply ArgoCD and SealedSecrets
+        uses: ./.github/workflows/cd.yaml
+          
+
+      # -----------------------------
       # AUTH
       # -----------------------------
       - name: Trigger auth pipeline
