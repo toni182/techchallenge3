@@ -229,3 +229,8 @@ analytics-service:
     minReplicas:
     maxReplicas:
     targetCPU:
+
+argocd:
+  namespace: argocd
+  ingress: 
+    path: /argocd(/|$)(.*)
