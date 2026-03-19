@@ -220,7 +220,7 @@ analytics-service:
   maxSurge: 50%
   maxUnavailable: 0
   replicas: 2
-  image: 057096910794.dkr.ecr.us-east-1.amazonaws.com/togglemaster_analytics-service:e49bc0a
+  image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/analytics-service:c2f5966
   port: 8005
   ingress: 
     path: /analytics-service(/|$)(.*)
