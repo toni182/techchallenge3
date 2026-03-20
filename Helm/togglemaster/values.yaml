@@ -233,4 +233,4 @@ analytics-service:
 argocd:
   namespace: argocd
   ingress: 
-    path: /argocd(/|$)(.*)
+    path: /argocd
