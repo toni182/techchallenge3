@@ -9,9 +9,6 @@ jobs:
 
     steps:
 
-      - name: Debug branch
-        run: echo "Running on branch: $GITHUB_REF_NAME"
-
       # ============================================
       # FUNÇÃO BASE (AUTH)
       # ============================================
