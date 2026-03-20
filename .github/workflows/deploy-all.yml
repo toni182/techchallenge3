@@ -9,6 +9,9 @@ jobs:
 
     steps:
 
+      - name: Debug branch
+        run: echo "Running on branch: $GITHUB_REF_NAME"
+
       # -----------------------------
       # AUTH
       # -----------------------------
@@ -18,7 +21,7 @@ jobs:
           -H "Authorization: Bearer ${{ secrets.GITOPS_TOKEN }}" \
           -H "Accept: application/vnd.github+json" \
           https://api.github.com/repos/${{ github.repository }}/actions/workflows/auth.yml/dispatches \
-          -d '{"ref":"feature/sealed_secret"}'
+          -d "{\"ref\":\"${GITHUB_REF_NAME}\"}"
 
       - name: Wait auth pipeline
         run: |
@@ -26,7 +29,7 @@ jobs:
           while true; do
             STATUS=$(curl -s \
               -H "Authorization: Bearer ${{ secrets.GITOPS_TOKEN }}" \
-              https://api.github.com/repos/${{ github.repository }}/actions/workflows/auth.yml/runs?per_page=1 \
+              "https://api.github.com/repos/${{ github.repository }}/actions/workflows/auth.yml/runs?per_page=1&branch=${GITHUB_REF_NAME}" \
               | jq -r '.workflow_runs[0].status')
 
             echo "$(date) - Status: $STATUS"
@@ -48,7 +51,7 @@ jobs:
           -H "Authorization: Bearer ${{ secrets.GITOPS_TOKEN }}" \
           -H "Accept: application/vnd.github+json" \
           https://api.github.com/repos/${{ github.repository }}/actions/workflows/flag.yml/dispatches \
-          -d '{"ref":"feature/sealed_secret"}'
+          -d "{\"ref\":\"${GITHUB_REF_NAME}\"}"
 
       - name: Wait flag pipeline
         run: |
@@ -56,7 +59,7 @@ jobs:
           while true; do
             STATUS=$(curl -s \
               -H "Authorization: Bearer ${{ secrets.GITOPS_TOKEN }}" \
-              https://api.github.com/repos/${{ github.repository }}/actions/workflows/flag.yml/runs?per_page=1 \
+              "https://api.github.com/repos/${{ github.repository }}/actions/workflows/flag.yml/runs?per_page=1&branch=${GITHUB_REF_NAME}" \
               | jq -r '.workflow_runs[0].status')
 
             echo "$(date) - Status: $STATUS"
@@ -78,7 +81,7 @@ jobs:
           -H "Authorization: Bearer ${{ secrets.GITOPS_TOKEN }}" \
           -H "Accept: application/vnd.github+json" \
           https://api.github.com/repos/${{ github.repository }}/actions/workflows/targeting.yml/dispatches \
-          -d '{"ref":"feature/sealed_secret"}'
+          -d "{\"ref\":\"${GITHUB_REF_NAME}\"}"
 
       - name: Wait targeting pipeline
         run: |
@@ -86,7 +89,7 @@ jobs:
           while true; do
             STATUS=$(curl -s \
               -H "Authorization: Bearer ${{ secrets.GITOPS_TOKEN }}" \
-              https://api.github.com/repos/${{ github.repository }}/actions/workflows/targeting.yml/runs?per_page=1 \
+              "https://api.github.com/repos/${{ github.repository }}/actions/workflows/targeting.yml/runs?per_page=1&branch=${GITHUB_REF_NAME}" \
               | jq -r '.workflow_runs[0].status')
 
             echo "$(date) - Status: $STATUS"
@@ -108,7 +111,7 @@ jobs:
           -H "Authorization: Bearer ${{ secrets.GITOPS_TOKEN }}" \
           -H "Accept: application/vnd.github+json" \
           https://api.github.com/repos/${{ github.repository }}/actions/workflows/evaluation.yml/dispatches \
-          -d '{"ref":"feature/sealed_secret"}'
+          -d "{\"ref\":\"${GITHUB_REF_NAME}\"}"
 
       - name: Wait evaluation pipeline
         run: |
@@ -116,7 +119,7 @@ jobs:
           while true; do
             STATUS=$(curl -s \
               -H "Authorization: Bearer ${{ secrets.GITOPS_TOKEN }}" \
-              https://api.github.com/repos/${{ github.repository }}/actions/workflows/evaluation.yml/runs?per_page=1 \
+              "https://api.github.com/repos/${{ github.repository }}/actions/workflows/evaluation.yml/runs?per_page=1&branch=${GITHUB_REF_NAME}" \
               | jq -r '.workflow_runs[0].status')
 
             echo "$(date) - Status: $STATUS"
@@ -138,7 +141,7 @@ jobs:
           -H "Authorization: Bearer ${{ secrets.GITOPS_TOKEN }}" \
           -H "Accept: application/vnd.github+json" \
           https://api.github.com/repos/${{ github.repository }}/actions/workflows/analytics.yml/dispatches \
-          -d '{"ref":"feature/sealed_secret"}'
+          -d "{\"ref\":\"${GITHUB_REF_NAME}\"}"
 
       - name: Wait analytics pipeline
         run: |
@@ -146,7 +149,7 @@ jobs:
           while true; do
             STATUS=$(curl -s \
               -H "Authorization: Bearer ${{ secrets.GITOPS_TOKEN }}" \
-              https://api.github.com/repos/${{ github.repository }}/actions/workflows/analytics.yml/runs?per_page=1 \
+              "https://api.github.com/repos/${{ github.repository }}/actions/workflows/analytics.yml/runs?per_page=1&branch=${GITHUB_REF_NAME}" \
               | jq -r '.workflow_runs[0].status')
 
             echo "$(date) - Status: $STATUS"
