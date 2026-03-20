@@ -170,6 +170,8 @@ jobs:
 
       - name: Commit and Push changes
         run: |
+          COMMIT_HASH=${GITHUB_SHA::7}
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
@@ -179,5 +181,5 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "Update ${{ env.SERVICE_NAME }} image to $COMMIT_HASH"
-            git push origin main
+            git push origin HEAD:${GITHUB_REF_NAME}
           fi
