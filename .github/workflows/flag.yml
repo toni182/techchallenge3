@@ -184,5 +184,3 @@ jobs:
             git commit -m "Update ${{ env.SERVICE_NAME }} image to $COMMIT_HASH"
             git push origin HEAD:${GITHUB_REF_NAME}
           fi
-            git push origin main
-          fi
