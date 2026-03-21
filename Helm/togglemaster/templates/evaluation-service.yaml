@@ -12,6 +12,7 @@ spec:
       maxSurge: {{ (index .Values "evaluation-service").maxSurge }}
       maxUnavailable: {{ (index .Values "evaluation-service").maxUnavailable }}
   replicas: {{ (index .Values "evaluation-service").replicas}}
+  revisionHistoryLimit: 1
   selector:
     matchLabels:
       app: app-evaluation-service

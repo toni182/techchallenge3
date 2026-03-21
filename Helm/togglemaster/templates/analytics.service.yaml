@@ -12,6 +12,7 @@ spec:
       maxSurge: {{ (index .Values "analytics-service").maxSurge }}
       maxUnavailable: {{ (index .Values "analytics-service").maxUnavailable }}
   replicas: {{ (index .Values "analytics-service").replicas}}
+  revisionHistoryLimit: 1
   selector:
     matchLabels:
       app: app-analytics-service

@@ -12,6 +12,7 @@ spec:
       maxSurge: {{ (index .Values "targeting-service").maxSurge }}
       maxUnavailable: {{ (index .Values "targeting-service").maxUnavailable }}
   replicas: {{ (index .Values "targeting-service").replicas}}
+  revisionHistoryLimit: 1
   selector:
     matchLabels:
       app: app-targeting-service

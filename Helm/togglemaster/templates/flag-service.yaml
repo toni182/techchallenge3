@@ -12,6 +12,7 @@ spec:
       maxSurge: {{ (index .Values "flag-service").maxSurge }}
       maxUnavailable: {{ (index .Values "flag-service").maxUnavailable }}
   replicas: {{ (index .Values "flag-service").replicas}}
+  revisionHistoryLimit: 1
   selector:
     matchLabels:
       app: app-flag-service

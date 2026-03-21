@@ -12,6 +12,7 @@ spec:
       maxSurge: {{ (index .Values "auth-service").maxSurge }}
       maxUnavailable: {{ (index .Values "auth-service").maxUnavailable }}
   replicas: {{ (index .Values "auth-service").replicas}}
+  revisionHistoryLimit: 1
   selector:
     matchLabels:
       app: app-auth-service
