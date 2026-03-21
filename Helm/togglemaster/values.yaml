@@ -57,7 +57,7 @@ flag-service:
   maxSurge: 50%
   maxUnavailable: 0
   replicas: 2
-  image: 618678798048.dkr.ecr.us-east-1.amazonaws.com/flag-service:799a3e1
+  image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/flag-service:7cbbfc8
   port: 8002
   ingress: 
     path: /flag-service(/|$)(.*)
@@ -97,7 +97,7 @@ flag-service:
       EXECUTE PROCEDURE trigger_set_timestamp();
   job:
     name: flag-db-init
-    image: 618678798048.dkr.ecr.us-east-1.amazonaws.com/flag-service:799a3e1
+    image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/flag-service:7cbbfc8
     command: ["sh", "-c"]
     args:
       - |
