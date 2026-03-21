@@ -33,6 +33,14 @@ auth-service:
 
         export PGPASSWORD="$POSTGRES_PASSWORD"
 
+        echo "Creating database if not exists..."
+        PGPASSWORD="$POSTGRES_PASSWORD" psql \
+          -h "$POSTGRES_HOST" \
+          -p "$POSTGRES_PORT" \
+          -U "$POSTGRES_USER" \
+          -d postgres \
+          -c "CREATE DATABASE IF NOT EXISTS $POSTGRES_DB;"
+
         echo "Running init.sql..."
         PGPASSWORD="$POSTGRES_PASSWORD" psql \
           -h "$POSTGRES_HOST" \

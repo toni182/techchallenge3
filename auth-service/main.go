@@ -50,13 +50,11 @@ if databaseURL == "" {
 	}
 
 	// --- Conexão com o Banco ---
-	// TODO: Temporarily disabled for testing
-	// db, err := connectDB(databaseURL)
-	// if err != nil {
-	// 	log.Fatalf("Não foi possível conectar ao banco de dados: %v, na url %s", err, databaseURL)
-	// }
-	// defer db.Close()
-	var db *sql.DB = nil
+	db, err := connectDB(databaseURL)
+	if err != nil {
+		log.Fatalf("Não foi possível conectar ao banco de dados: %v, na url %s", err, databaseURL)
+	}
+	defer db.Close()
 
 	app := &App{
 		DB:         db,
