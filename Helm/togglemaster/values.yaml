@@ -132,7 +132,7 @@ targeting-service:
   maxSurge: 50%
   maxUnavailable: 0
   replicas: 2
-  image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/targeting-service:16f5b23
+  image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/targeting-service:2c70941
   port: 8003
   ingress: 
     path: /targeting-service(/|$)(.*)
@@ -175,7 +175,7 @@ targeting-service:
       EXECUTE PROCEDURE trigger_set_timestamp();
   job:
     name: targeting-db-init
-    image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/targeting-service:16f5b23
+    image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/targeting-service:2c70941
     command: ["sh", "-c"]
     args:
       - |
