@@ -1,13 +1,14 @@
 package main
 
 import (
-    "database/sql"
-    "log"
-    "net/http"
-    "os"
+	"database/sql"
+	"fmt"
+	"log"
+	"net/http"
+	"os"
 
-    _ "github.com/jackc/pgx/v4/stdlib"
-    "github.com/joho/godotenv"
+	_ "github.com/jackc/pgx/v4/stdlib"
+	"github.com/joho/godotenv"
 )
 
 // App struct (para injeção de dependência)
@@ -26,10 +27,22 @@ func main() {
 		port = "8001" // Porta padrão
 	}
 
-	databaseURL := os.Getenv("DATABASE_URL")
-	if databaseURL == "" {
-		log.Fatal("DATABASE_URL deve ser definida")
-	}
+databaseURL := os.Getenv("DATABASE_URL")
+
+if databaseURL == "" {
+    // Caso não exista, monta a URL a partir das variáveis individuais
+    user := os.Getenv("POSTGRES_USER")
+    password := os.Getenv("POSTGRES_PASSWORD")
+    host := os.Getenv("POSTGRES_HOST")
+    port := os.Getenv("POSTGRES_PORT")
+    dbName := os.Getenv("POSTGRES_DB")
+
+    if user == "" || password == "" || host == "" || port == "" || dbName == "" {
+        log.Fatal("Variáveis de ambiente insuficientes para montar a conexão com o banco de dados")
+    }
+
+    databaseURL = fmt.Sprintf("postgres://%s:%s@%s:%s/%s", user, password, host, port, dbName)
+}
 
 	masterKey := os.Getenv("MASTER_KEY")
 	if masterKey == "" {
@@ -39,7 +52,7 @@ func main() {
 	// --- Conexão com o Banco ---
 	db, err := connectDB(databaseURL)
 	if err != nil {
-		log.Fatalf("Não foi possível conectar ao banco de dados: %v", err)
+		log.Fatalf("Não foi possível conectar ao banco de dados: %v, na url %s", err, databaseURL)
 	}
 	defer db.Close()
 

@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"encoding/hex"
+	//"fmt"
 )
 
 // generateAPIKey cria uma string aleatória segura de 32 bytes
