@@ -13,7 +13,7 @@ flag-service:
   maxSurge: 50%
   maxUnavailable: 0
   replicas: 2
-  image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/flag-service:a1a9a84
+  image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/flag-service:35b6cbd
   port: 8002
   ingress: 
     path: /flag-service(/|$)(.*)
