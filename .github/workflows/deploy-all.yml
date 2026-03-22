@@ -29,7 +29,7 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Deploy ${{ matrix.service | upper }}
+      - name: Deploy ${{ matrix.service }}
         run: |
           WORKFLOW="${{ matrix.workflow }}"
 
@@ -56,7 +56,7 @@ jobs:
             STATUS=$(echo $RESPONSE | jq -r '.status')
             CONCLUSION=$(echo $RESPONSE | jq -r '.conclusion')
 
-            echo "${{ matrix.service | upper }}: $STATUS / $CONCLUSION"
+            echo "${{ matrix.service }}: $STATUS / $CONCLUSION"
 
             if [ "$STATUS" == "completed" ]; then
               if [ "$CONCLUSION" != "success" ]; then
