@@ -3,6 +3,7 @@ auth-service:
   maxSurge: 50%
   maxUnavailable: 0
   replicas: 2
+<<<<<<< Updated upstream
   image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/auth-service:05a5aa8
   port: 8001
   ingress: 
@@ -59,13 +60,17 @@ auth-service:
           -c "\dt"
 
         echo "Job ended"
+  image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/auth-service:05a5aa8
+  port: 8001
+  ingress: 
+    path: /auth-service(/|$)(.*)
 
 flag-service:
   namespace: flag-service
   maxSurge: 50%
   maxUnavailable: 0
   replicas: 2
-  image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/flag-service:067a557
+image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/flag-service:067a557
   port: 8002
   ingress: 
     path: /flag-service(/|$)(.*)
@@ -134,13 +139,17 @@ flag-service:
           -c "\dt"
 
         echo "Job ended"
+  image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/flag-service:067a557
+  port: 8002
+  ingress: 
+    path: /flag-service(/|$)(.*)
 
 targeting-service:
   namespace: targeting-service
   maxSurge: 50%
   maxUnavailable: 0
   replicas: 2
-  image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/targeting-service:1552cf9
+image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/targeting-service:1552cf9
   port: 8003
   ingress: 
     path: /targeting-service(/|$)(.*)
@@ -212,6 +221,10 @@ targeting-service:
           -c "\dt"
 
         echo "Job ended"
+  image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/targeting-service:1552cf9
+  port: 8003
+  ingress: 
+    path: /targeting-service(/|$)(.*)
 
 evaluation-service:
   namespace: evaluation-service
@@ -242,4 +255,4 @@ argocd:
   namespace: argocd
   port: 80
   ingress:
-    path: /argocd
+    path: /argocd(/|$)(.*)
