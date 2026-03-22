@@ -23,7 +23,7 @@ targeting-service:
   maxSurge: 50%
   maxUnavailable: 0
   replicas: 2
-  image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/targeting-service:1552cf9
+  image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/targeting-service:c05aa7a
   port: 8003
   ingress: 
     path: /targeting-service(/|$)(.*)
