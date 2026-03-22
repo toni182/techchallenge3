@@ -34,14 +34,14 @@ if databaseURL == "" {
     user := os.Getenv("POSTGRES_USER")
     password := os.Getenv("POSTGRES_PASSWORD")
     host := os.Getenv("POSTGRES_HOST")
-    port := os.Getenv("POSTGRES_PORT")
+    dbPort := os.Getenv("POSTGRES_PORT")
     dbName := os.Getenv("POSTGRES_DB")
 
-    if user == "" || password == "" || host == "" || port == "" || dbName == "" {
+    if user == "" || password == "" || host == "" || dbPort == "" || dbName == "" {
         log.Fatal("Variáveis de ambiente insuficientes para montar a conexão com o banco de dados")
     }
 
-    databaseURL = fmt.Sprintf("postgres://%s:%s@%s:%s/%s", user, password, host, port, dbName)
+    databaseURL = fmt.Sprintf("postgres://%s:%s@%s:%s/%s", user, password, host, dbPort, dbName)
 }
 
 	masterKey := os.Getenv("MASTER_KEY")

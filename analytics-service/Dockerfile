@@ -17,5 +17,5 @@ COPY . .
 EXPOSE 8005
 
 # Comando para rodar o serviço
-CMD ["gunicorn", "--bind", "0.0.0.0:8002", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8005", "app:app"]
 

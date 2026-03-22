@@ -3,54 +3,10 @@ auth-service:
   maxSurge: 50%
   maxUnavailable: 0
   replicas: 2
-  image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/auth-service:4f1d7d1
+  image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/auth-service:7512dbf
   port: 8001
   ingress: 
     path: /auth-service(/|$)(.*)
-  configMap:
-    name: db-auth-service-init-sql
-    init.sql: |
-      CREATE TABLE IF NOT EXISTS api_keys (
-        id SERIAL PRIMARY KEY,
-        name VARCHAR(100) NOT NULL,
-        
-        -- key_hash armazena o hash SHA-256 da chave, que tem 64 caracteres hexadecimais
-        key_hash VARCHAR(64) NOT NULL UNIQUE, 
-        
-        is_active BOOLEAN DEFAULT true,
-        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-      );
-  job:
-    name: auth-db-init
-    image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/auth-service:4f1d7d1
-    command: ["sh", "-c"]
-    args:
-      - |
-        echo "Waiting for database..."
-        until pg_isready -h "$POSTGRES_HOST" -p "$POSTGRES_PORT" -U "$POSTGRES_USER"; do
-          sleep 2
-        done
-
-        export PGPASSWORD="$POSTGRES_PASSWORD"
-
-        echo "Running init.sql..."
-        PGPASSWORD="$POSTGRES_PASSWORD" psql \
-          -h "$POSTGRES_HOST" \
-          -p "$POSTGRES_PORT" \
-          -U "$POSTGRES_USER" \
-          -d "$POSTGRES_DB" \
-          -f /sql/init.sql
-        echo "Table created successfully"
-        echo "--------"
-        echo "Checking tables..."
-        psql \
-          -h $POSTGRES_HOST \
-          -p $POSTGRES_PORT \
-          -U $POSTGRES_USER \
-          -d $POSTGRES_DB \
-          -c "\dt"
-
-        echo "Job ended"
 
 flag-service:
   namespace: flag-service
@@ -108,109 +64,24 @@ flag-service:
 
         export PGPASSWORD="$POSTGRES_PASSWORD"
 
-        echo "Running init.sql..."
-        PGPASSWORD="$POSTGRES_PASSWORD" psql \
-          -h "$POSTGRES_HOST" \
-          -p "$POSTGRES_PORT" \
-          -U "$POSTGRES_USER" \
-          -d "$POSTGRES_DB" \
-          -f /sql/init.sql
-        echo "Table created successfully"
-        echo "--------"
-        echo "Checking tables..."
-        psql \
-          -h $POSTGRES_HOST \
-          -p $POSTGRES_PORT \
-          -U $POSTGRES_USER \
-          -d $POSTGRES_DB \
-          -c "\dt"
-
-        echo "Job ended"
 
 targeting-service:
   namespace: targeting-service
   maxSurge: 50%
   maxUnavailable: 0
   replicas: 2
-  image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/targeting-service:4f60d5a
+  image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/targeting-service:c05aa7a
   port: 8003
   ingress: 
     path: /targeting-service(/|$)(.*)
-  configMap:
-    name: db-targeting-service-init-sql
-    init.sql: |
-      CREATE TABLE IF NOT EXISTS targeting_rules (
-          id SERIAL PRIMARY KEY,
 
-          -- 'flag_name' é a chave de negócio única. 
-          -- Cada flag pode ter no máximo UMA regra de segmentação.
-          flag_name VARCHAR(100) UNIQUE NOT NULL,
-          
-          -- Se a regra de segmentação em si está ativa ou não
-          is_enabled BOOLEAN NOT NULL DEFAULT true,
-          
-          -- Armazena a lógica da regra como um JSON.
-          -- Ex: {"type": "PERCENTAGE", "value": 50}
-          -- Ex: {"type": "USER_LIST", "values": ["u1", "u2"]}
-          rules JSONB NOT NULL,
-          
-          created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-          updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-      );
-
-      -- Trigger para atualizar 'updated_at' automaticamente (igual ao do flag-service)
-      CREATE OR REPLACE FUNCTION trigger_set_timestamp()
-      RETURNS TRIGGER AS $$
-      BEGIN
-        NEW.updated_at = NOW();
-        RETURN NEW;
-      END;
-      $$ LANGUAGE plpgsql;
-
-      DROP TRIGGER IF EXISTS set_timestamp ON targeting_rules;
-
-      CREATE TRIGGER set_timestamp
-      BEFORE UPDATE ON targeting_rules
-      FOR EACH ROW
-      EXECUTE PROCEDURE trigger_set_timestamp();
-  job:
-    name: targeting-db-init
-    image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/targeting-service:4f60d5a
-    command: ["sh", "-c"]
-    args:
-      - |
-        echo "Waiting for database..."
-        until pg_isready -h "$POSTGRES_HOST" -p "$POSTGRES_PORT" -U "$POSTGRES_USER"; do
-          sleep 2
-        done
-
-        export PGPASSWORD="$POSTGRES_PASSWORD"
-
-        echo "Running init.sql..."
-        PGPASSWORD="$POSTGRES_PASSWORD" psql \
-          -h "$POSTGRES_HOST" \
-          -p "$POSTGRES_PORT" \
-          -U "$POSTGRES_USER" \
-          -d "$POSTGRES_DB" \
-          -f /sql/init.sql
-        echo "Table created successfully"
-        echo "--------"
-        echo "Checking tables..."
-        psql \
-          -h $POSTGRES_HOST \
-          -p $POSTGRES_PORT \
-          -U $POSTGRES_USER \
-          -d $POSTGRES_DB \
-          -c "\dt"
-
-        echo "Job ended"
 
 evaluation-service:
   namespace: evaluation-service
   maxSurge: 50%
   maxUnavailable: 0
   replicas: 2
-  image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/evaluation-service:43b2901
+  image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/evaluation-service:2fc0b5b
   port: 8004
   ingress: 
     path: /evaluation-service(/|$)(.*)
@@ -220,7 +91,7 @@ analytics-service:
   maxSurge: 50%
   maxUnavailable: 0
   replicas: 2
-  image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/analytics-service:f2c1298
+  image: 654654467270.dkr.ecr.us-east-1.amazonaws.com/analytics-service:8514619
   port: 8005
   ingress: 
     path: /analytics-service(/|$)(.*)
@@ -234,4 +105,4 @@ argocd:
   namespace: argocd
   port: 80
   ingress:
-    path: /argocd
+    path: /argocd(/|$)(.*)
