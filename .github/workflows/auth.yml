@@ -3,6 +3,18 @@ name: CI/CD for Auth Service
 on:
   workflow_dispatch:
 
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '.github/workflows/**'
+
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - '.github/workflows/**'
+
 env:
   SERVICE_NAME: auth-service
   GITOPS_TOKEN: ${{ secrets.GITOPS_TOKEN }}
