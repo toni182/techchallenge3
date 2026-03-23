@@ -6,16 +6,15 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - '.github/workflows/**'
-      - 'Helm/togglemaster/values.yaml'
+    paths:
+      - 'targeting-service/**'
+
 
   pull_request:
     branches:
       - main
-    paths-ignore:
-      - '.github/workflows/**'
-      - 'Helm/togglemaster/values.yaml'
+    paths:
+      - 'targeting-service/**'
 
 env:
   SERVICE_NAME: targeting-service
