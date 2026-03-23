@@ -1,20 +1,3 @@
-#FROM golang:1.21-alpine
-#
-#WORKDIR /app
-#
-#COPY *.go .
-#
-#COPY go.mod .
-#
-#RUN go mod tidy
-#
-#RUN env
-#
-#CMD [ "go", "run", "." ]
-#
-##-----------
-
-
 # Estágio 1: "Builder"
 FROM golang:1.24-alpine AS builder
 
